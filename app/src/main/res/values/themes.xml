@@ -13,4 +13,45 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- Base application theme. -->
+    <style name="Theme.Cryptocurrency" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/lightBrown</item>
+        <item name="colorPrimaryVariant">@color/darkBrown</item>
+        <item name="colorOnPrimary">@color/_white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/lightOrange</item>
+        <item name="colorSecondaryVariant">@color/darkOrange</item>
+        <item name="colorOnSecondary">@color/text_black</item>
+        <item name="fontFamily">@font/supermercado_one_regular</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.Cryptocurrency.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Cryptocurrency.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Cryptocurrency.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TableHeader" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="TableItems" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 </resources>

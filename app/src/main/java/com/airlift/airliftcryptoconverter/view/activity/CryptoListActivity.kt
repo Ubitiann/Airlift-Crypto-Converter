@@ -1,4 +1,4 @@
-package com.airlift.airliftcryptoconverter.view
+package com.airlift.airliftcryptoconverter.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

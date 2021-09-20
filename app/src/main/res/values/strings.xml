@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">Airlift crypto converter</string>
+    <string name="app_name">Airlift Crypto Converter</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!--  Welcome message for splash screen  -->
+    <string name="splash_title">@string/app_name</string>
+
+    <!--  table header titles  -->
+    <string name="rank_title">#</string>
+    <string name="name_title">Name</string>
+    <string name="symbol_title">Symbol</string>
+    <string name="price_title">Price</string>
+    <string name="percentage_title">%</string>
+    <string name="logo_desc">logo</string>
+    <string name="checkInternetConnection">Check Internet Connection</string>
 </resources>
