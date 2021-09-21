@@ -23,4 +23,5 @@
     <string name="convertCurrencies">Convert Currency</string>
     <string name="errorMessage">Error in Currency List</string>
     <string name="numeric_digits">01234567890</string>
+    <string name="enterValue">Enter Value</string>
 </resources>
