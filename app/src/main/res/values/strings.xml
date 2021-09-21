@@ -14,4 +14,13 @@
     <string name="percentage_title">%</string>
     <string name="logo_desc">logo</string>
     <string name="checkInternetConnection">Check Internet Connection</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="convertText">Convert</string>
+    <string name="toCTA">↓</string>
+    <string name="fromHint">Enter Amount</string>
+    <string name="toHint">Press Convert</string>
+    <string name="convertCurrencies">Convert Currency</string>
+    <string name="errorMessage">Error in Currency List</string>
+    <string name="numeric_digits">01234567890</string>
 </resources>

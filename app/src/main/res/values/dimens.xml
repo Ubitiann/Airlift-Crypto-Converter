@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="splashTitleSize">28sp</dimen>
+    //card radius
+    <dimen name="defaultRadius">16dp</dimen>
+    <dimen name="marginBtnConvertCurrencyBottom">10dp</dimen>
 </resources>

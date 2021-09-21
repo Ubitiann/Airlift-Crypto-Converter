@@ -30,7 +30,7 @@
             android:layout_weight="2"
             android:text="Bitcoin" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <TextView
             android:id="@+id/txt_symbol"
             style="@style/TableItems"
             android:layout_width="0dp"

@@ -12,18 +12,24 @@ import com.airlift.airliftcryptoconverter.R
 
 class SplashFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-            super.onActivityCreated(savedInstanceState)
+        super.onActivityCreated(savedInstanceState)
         // 3 seconds delay for splash screen
         Handler(Looper.getMainLooper()).postDelayed(
             Runnable {
-               requireView().findNavController().navigate(R.id.action_splashFragment_to_currencyListFragment)
+                try {
+                    requireView().findNavController()
+                        .navigate(R.id.action_splashFragment_to_currencyListFragment)
+                } catch (e: Exception) {
+                }
             }, 3000
         )
     }

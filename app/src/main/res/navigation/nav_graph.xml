@@ -20,4 +20,12 @@
         android:name="com.airlift.airliftcryptoconverter.view.fragment.CryptoListFragment"
         android:label="crypto_list_fragment"
         tools:layout="@layout/crypto_list_fragment" />
+
+    <fragment
+        android:id="@+id/cryptoConvertFragment"
+        android:name="com.airlift.airliftcryptoconverter.view.fragment.CryptoConvertFragment"
+        android:label="crypto_convert_fragment"
+        tools:layout="@layout/fragment_crypto_convert">
+    </fragment>
+
 </navigation>
