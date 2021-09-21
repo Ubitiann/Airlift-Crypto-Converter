@@ -127,9 +127,8 @@ class CryptoConvertFragment : Fragment(), ConvertCurrencyHandler {
             }
 
             var result =
-                Integer.parseInt(binding.fromCurrency.text.toString()) * Integer.parseInt(fromRate.toString()) / Integer.parseInt(
-                    toRate
-                )
+                (binding.fromCurrency.text.toString().toDouble() * fromRate.toString().toDouble()) /
+                        toRate.toDouble()
             binding.toCurrency.setText(result.toString())
         } catch (e: NumberFormatException) {
             binding.fromCurrency.setText("0")
