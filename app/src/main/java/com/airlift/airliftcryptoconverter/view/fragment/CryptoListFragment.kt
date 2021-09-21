@@ -11,35 +11,40 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airlift.airliftcryptoconverter.R
 import com.airlift.airliftcryptoconverter.adapter.CryptoAdapter
+import com.airlift.airliftcryptoconverter.databinding.CryptoListFragmentBinding
+import com.airlift.airliftcryptoconverter.interfaces.ConvertCurrencyMoveHandler
 import com.airlift.airliftcryptoconverter.model.Currency
 import com.airlift.airliftcryptoconverter.repository.CryptoRepository
 import com.airlift.airliftcryptoconverter.utils.Resource
 import com.airlift.airliftcryptoconverter.viewmodel.CryptoListViewModel
 import com.airlift.airliftcryptoconverter.viewmodel.CryptoListViewModelFactory
 
-class CryptoListFragment : Fragment() {
+class CryptoListFragment : Fragment(), ConvertCurrencyMoveHandler {
 
     //declaration
+    private lateinit var binding: CryptoListFragmentBinding
     private lateinit var repository: CryptoRepository
     private lateinit var viewModel: CryptoListViewModel
     private lateinit var cryptoAdapter: CryptoAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var btnConvertCurreny: Button
     private lateinit var currencyList: List<Currency>
+    private var isResponseOk: Boolean = false
     private val TAG = "CryptoListFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.crypto_list_fragment, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.crypto_list_fragment, container, false);
+        binding.clickListener = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,24 +58,22 @@ class CryptoListFragment : Fragment() {
             ViewModelProvider(this, cryptoListViewModelFactory).get(CryptoListViewModel::class.java)
 
         //setting up recyclerview
-        recyclerView = view.findViewById(R.id.recyclerView)
-        progressBar = view.findViewById(R.id.progressBar)
-        btnConvertCurreny = view.findViewById(R.id.btnConvertCurrency)
         setUpRecyclerView()
 
         //observing view model
         viewModel.currencyList.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
-                is Resource.Success -> {
+                is Resource.Success -> { //is success
                     hideProgressBar()
                     response.data?.let {
                         cryptoAdapter.differ.submitList(it.data.toList())
                         currencyList = it.data.toList();
-                        btnConvertCurreny.setEnabled(true)
+                        binding.btnConvertCurrency.setEnabled(true)
+                        isResponseOk = true
                     }
                 }
-                is Resource.Error -> {
-                    btnConvertCurreny.setEnabled(false)
+                is Resource.Error -> { //is error
+                    binding.btnConvertCurrency.setEnabled(false)
                     hideProgressBar()
                     Toast.makeText(
                         context,
@@ -82,30 +85,37 @@ class CryptoListFragment : Fragment() {
                 is Resource.Loading -> showProgressBar()
             }
         })
-
-        btnConvertCurreny.setOnClickListener {
-            var bundle = bundleOf("currencyList" to currencyList)
-            val navController = findNavController()
-            navController.navigate(R.id.cryptoConvertFragment, bundle)
-        }
     }
 
     //progress bar hiding logic
     private fun hideProgressBar() {
-        progressBar.setVisibility(View.GONE)
+        binding.progressBar.setVisibility(View.GONE)
     }
 
     //progress bar showing logic
     private fun showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE)
+        binding.progressBar.setVisibility(View.VISIBLE)
     }
 
     //method for setting up recyclerview
     private fun setUpRecyclerView() {
         cryptoAdapter = CryptoAdapter()
-        recyclerView.apply {
+        binding.recyclerView.apply {
             adapter = cryptoAdapter
             layoutManager = LinearLayoutManager(activity)
+        }
+    }
+
+    // transaction to convert currency fragment
+    override fun onFragTransaction(view: View) {
+        when (view.id) {
+            R.id.btnConvertCurrency -> {
+                if (isResponseOk) {
+                    var bundle = bundleOf("currencyList" to currencyList)
+                    val navController = findNavController()
+                    navController.navigate(R.id.cryptoConvertFragment, bundle)
+                }
+            }
         }
     }
 }

@@ -8,57 +8,49 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.airlift.airliftcryptoconverter.R
+import com.airlift.airliftcryptoconverter.databinding.CryptoListItemBinding
 import com.airlift.airliftcryptoconverter.model.Currency
 
 
 class CryptoAdapter : RecyclerView.Adapter<CryptoAdapter.CoinViewHolder>() {
 
-        inner class CoinViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-            val txtRank: TextView = itemView.findViewById(R.id.txt_rank)
-            val txtSymbol: TextView = itemView.findViewById(R.id.txt_symbol)
-            val txtName: TextView = itemView.findViewById(R.id.txt_name)
-            val txtPrice: TextView = itemView.findViewById(R.id.txt_price)
-        }
-
-        private val differCallback = object: DiffUtil.ItemCallback<Currency>(){
-            override fun areItemsTheSame(oldItem: Currency, newItem: Currency): Boolean {
-                return oldItem.symbol == newItem.symbol
+    inner class CoinViewHolder(val binding: CryptoListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(currency: Currency) {
+            with(itemView) {
+                binding.txtName.text = currency.name
+                binding.txtPrice.text = currency.price
+                binding.txtSymbol.text = currency.symbol
+                binding.txtRank.text = currency.rank
             }
+        }
+    }
 
-            override fun areContentsTheSame(oldItem: Currency, newItem: Currency): Boolean {
-                return  oldItem == newItem
-            }
-
+    private val differCallback = object : DiffUtil.ItemCallback<Currency>() {
+        override fun areItemsTheSame(oldItem: Currency, newItem: Currency): Boolean {
+            return oldItem.symbol == newItem.symbol
         }
 
-        val differ = AsyncListDiffer(this, differCallback)
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
-            return CoinViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.crypto_list_item,
-                    parent,
-                    false
-                )
-            )
+        override fun areContentsTheSame(oldItem: Currency, newItem: Currency): Boolean {
+            return oldItem == newItem
         }
 
-        override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
-            val coinInfo = differ.currentList[position]
+    }
 
-            holder.apply {
-                txtName.text = coinInfo.name
-                txtPrice.text = coinInfo.price
-                txtSymbol.text = coinInfo.symbol
-                txtRank.text = coinInfo.rank
+    val differ = AsyncListDiffer(this, differCallback)
 
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinViewHolder {
+        val binding =
+            CryptoListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CoinViewHolder(binding)
+    }
 
-        }
+    override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
+        val currencyInfo = differ.currentList[position]
+        holder.bind(currencyInfo)
+    }
 
-        override fun getItemCount(): Int {
-            return differ.currentList.size
-        }
-
-
+    override fun getItemCount(): Int {
+        return differ.currentList.size
+    }
 }

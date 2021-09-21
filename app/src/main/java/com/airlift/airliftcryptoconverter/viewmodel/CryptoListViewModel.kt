@@ -26,7 +26,7 @@ class CryptoListViewModel(
 ) : AndroidViewModel(app) {
     //declaration
     val currencyList: MutableLiveData<Resource<CurrencyDataResponse>> = MutableLiveData()
-    var currencyDataResponse: CurrencyDataResponse? = null
+    private var currencyDataResponse: CurrencyDataResponse? = null
 
     //getting currency list from rest API
     init {

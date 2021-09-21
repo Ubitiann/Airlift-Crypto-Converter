@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:elevation="4dp">
+<layout>
 
-    <TableRow
-        android:id="@+id/table_row"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@drawable/container_bordered">
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:elevation="4dp">
 
-        <TextView
-            android:id="@+id/txt_rank"
-            style="@style/TableItems"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_weight=".5"
-            android:text="2" />
+        <TableRow
+            android:id="@+id/table_row"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/container_bordered">
 
-        <TextView
-            android:id="@+id/txt_name"
-            style="@style/TableItems"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_weight="2"
-            android:text="Bitcoin" />
+            <TextView
+                android:id="@+id/txt_rank"
+                style="@style/TableItems"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_weight=".5"
+                android:text="2" />
 
-        <TextView
-            android:id="@+id/txt_symbol"
-            style="@style/TableItems"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_weight="1"
-            android:text="btc" />
+            <TextView
+                android:id="@+id/txt_name"
+                style="@style/TableItems"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_weight="2"
+                android:text="Bitcoin" />
 
-        <TextView
-            android:id="@+id/txt_price"
-            style="@style/TableItems"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_column="3"
-            android:layout_weight="1.5"
-            android:text="300" />
+            <TextView
+                android:id="@+id/txt_symbol"
+                style="@style/TableItems"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="btc" />
 
+            <TextView
+                android:id="@+id/txt_price"
+                style="@style/TableItems"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_weight="1.5"
+                android:text="300" />
 
-    </TableRow>
-</TableLayout>
+        </TableRow>
+
+    </TableLayout>
+
+</layout>

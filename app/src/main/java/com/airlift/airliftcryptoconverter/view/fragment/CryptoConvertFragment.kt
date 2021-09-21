@@ -11,12 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.airlift.airliftcryptoconverter.R
+import com.airlift.airliftcryptoconverter.databinding.FragmentCryptoConvertBinding
+import com.airlift.airliftcryptoconverter.interfaces.ConvertCurrencyHandler
 import com.airlift.airliftcryptoconverter.model.Currency
 import com.airlift.airliftcryptoconverter.repository.CryptoRepository
 import com.airlift.airliftcryptoconverter.utils.Resource
@@ -31,28 +34,28 @@ import java.lang.NumberFormatException
  * Use the [CryptoConvertFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CryptoConvertFragment : Fragment() {
+class CryptoConvertFragment : Fragment(), ConvertCurrencyHandler {
 
     //declaration
-    private lateinit var fromSpinner: Spinner
-    private lateinit var toSpinner: Spinner
-    private lateinit var fromCurrencyEditText: EditText
-    private lateinit var toCurrencyEditText: EditText
+    private lateinit var binding: FragmentCryptoConvertBinding
     private lateinit var repository: CryptoRepository
     private lateinit var viewModel: CryptoListViewModel
     private lateinit var currencyList: List<Currency>
-    private lateinit var btnConvert: Button
     private lateinit var fromCurrency: String
     private lateinit var toCurrency: String
     private lateinit var navController: NavController
     private lateinit var tempList: MutableList<String>
+    private var isResponseOk: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_crypto_convert, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_crypto_convert, container, false);
+        binding.clickListener = this
+        return binding.root;
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,13 +72,6 @@ class CryptoConvertFragment : Fragment() {
         //setting nav controller
         navController = findNavController()
 
-        //initializing spinner
-        fromSpinner = view.findViewById(R.id.fromDropdown)
-        toSpinner = view.findViewById(R.id.toDropdown)
-        btnConvert = view.findViewById(R.id.btnConvert)
-        fromCurrencyEditText = view.findViewById(R.id.fromCurrency)
-        toCurrencyEditText = view.findViewById(R.id.toCurrency)
-
         //handling view model
         repository = CryptoRepository()
         val cryptoListViewModelFactory =
@@ -86,7 +82,7 @@ class CryptoConvertFragment : Fragment() {
         //observing view model
         viewModel.currencyList.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
-                is Resource.Success -> {
+                is Resource.Success -> { //is success
                     response.data?.let {
                         currencyList = it.data.toList();
                         //setting spinner for currencies
@@ -95,14 +91,12 @@ class CryptoConvertFragment : Fragment() {
                         //setting button convert click listener
                         if (currencyList != null) {
                             if (currencyList.size > 0) {
-                                btnConvert.setOnClickListener {
-                                    convertCurrency()
-                                }
+                                isResponseOk = true
                             }
                         }
                     }
                 }
-                is Resource.Error -> {
+                is Resource.Error -> { //is error
                     Toast.makeText(
                         context,
                         activity?.resources?.getString(R.string.errorMessage),
@@ -133,13 +127,13 @@ class CryptoConvertFragment : Fragment() {
             }
 
             var result =
-                Integer.parseInt(fromCurrencyEditText.text.toString()) * Integer.parseInt(fromRate.toString()) / Integer.parseInt(
+                Integer.parseInt(binding.fromCurrency.text.toString()) * Integer.parseInt(fromRate.toString()) / Integer.parseInt(
                     toRate
                 )
-            toCurrencyEditText.setText(result.toString())
+            binding.toCurrency.setText(result.toString())
         } catch (e: NumberFormatException) {
-            fromCurrencyEditText.setText("0")
-            toCurrencyEditText.setText("0")
+            binding.fromCurrency.setText("0")
+            binding.toCurrency.setText("0")
         }
     }
 
@@ -156,8 +150,9 @@ class CryptoConvertFragment : Fragment() {
             tempList
         )
 
-        fromSpinner.adapter = arrayAdapter
-        fromSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        //setting from spinner
+        binding.fromDropdown.adapter = arrayAdapter
+        binding.fromDropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View,
@@ -172,8 +167,9 @@ class CryptoConvertFragment : Fragment() {
             }
         }
 
-        toSpinner.adapter = arrayAdapter
-        toSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        //setting to spinner
+        binding.toDropdown.adapter = arrayAdapter
+        binding.toDropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View,
@@ -188,5 +184,14 @@ class CryptoConvertFragment : Fragment() {
             }
         }
 
+    }
+
+    override fun onConvert(view: View) {
+        when (view.id) {
+            R.id.btnConvert -> {
+                if (isResponseOk)
+                    convertCurrency()
+            }
+        }
     }
 }
